@@ -3,237 +3,641 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>대포뽑기 닉네임</title>
+  <title>대포 닉네임 뽑기</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
       font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
-      background: linear-gradient(180deg, #0f172a, #020617);
-      color: #ffffff;
+      background:
+        radial-gradient(circle at top, #1e293b 0%, #0f172a 35%, #020617 100%);
+      color: #fff;
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
     }
 
     .wrap {
       width: 100%;
-      max-width: 700px;
-      background: rgba(15, 23, 42, 0.95);
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .top-box, .history-box {
+      background: rgba(15, 23, 42, 0.92);
       border: 1px solid #334155;
-      border-radius: 20px;
-      padding: 24px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      border-radius: 22px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+    }
+
+    .top-box {
+      padding: 20px;
+      margin-bottom: 18px;
     }
 
     h1 {
-      margin: 0 0 10px;
+      margin: 0 0 16px;
+      font-size: 34px;
       text-align: center;
-      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
     }
 
-    .desc {
+    .sub {
       text-align: center;
       color: #cbd5e1;
-      font-size: 14px;
       margin-bottom: 20px;
       line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .config-title, .history-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .config-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
     }
 
     textarea {
       width: 100%;
-      min-height: 220px;
+      min-height: 170px;
       resize: vertical;
+      border-radius: 16px;
       border: 1px solid #475569;
-      border-radius: 14px;
-      padding: 14px;
-      font-size: 16px;
       background: #020617;
       color: #fff;
+      padding: 14px;
+      font-size: 16px;
       outline: none;
     }
 
     textarea:focus {
-      border-color: #3b82f6;
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 3px rgba(96,165,250,0.14);
     }
 
-    .btns {
+    .right-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option-card {
+      background: #111827;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .option-label {
+      font-weight: 700;
+      font-size: 15px;
+      margin-bottom: 8px;
+      color: #e2e8f0;
+    }
+
+    .option-desc {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      border: 1px solid #475569;
+      background: #020617;
+      color: white;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      color: #e2e8f0;
+    }
+
+    .btn-row {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
-      margin-top: 14px;
+      margin-top: 6px;
     }
 
     button {
-      flex: 1;
-      min-width: 120px;
       border: none;
-      border-radius: 12px;
-      padding: 14px 16px;
-      font-size: 16px;
-      font-weight: bold;
+      border-radius: 14px;
+      padding: 13px 18px;
+      font-size: 15px;
+      font-weight: 800;
       cursor: pointer;
-      transition: 0.2s;
+      transition: transform .15s ease, opacity .15s ease, background .15s ease;
     }
 
-    .pick-btn {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: white;
-    }
-
-    .pick-btn:hover {
+    button:hover {
       transform: translateY(-1px);
-      opacity: 0.95;
+      opacity: 0.96;
+    }
+
+    .start-btn {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #fff;
+      flex: 1;
+    }
+
+    .fire-btn {
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      color: #fff;
+      flex: 1;
     }
 
     .reset-btn {
       background: #334155;
-      color: white;
+      color: #fff;
+      flex: 1;
     }
 
-    .reset-btn:hover {
-      background: #475569;
-    }
-
-    .copy-btn {
-      background: #16a34a;
-      color: white;
-    }
-
-    .copy-btn:hover {
-      background: #15803d;
-    }
-
-    .result-box {
-      margin-top: 22px;
+    .stage {
+      margin-top: 18px;
+      background:
+        linear-gradient(to top, rgba(30,41,59,0.9), rgba(15,23,42,0.75)),
+        radial-gradient(circle at 50% 10%, rgba(59,130,246,0.12), transparent 40%);
       border: 1px solid #334155;
-      border-radius: 16px;
-      padding: 24px 16px;
-      text-align: center;
-      background: #020617;
+      border-radius: 22px;
+      padding: 18px;
+      min-height: 440px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .result-label {
+    .sky-glow {
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(59,130,246,0.22), transparent 70%);
+      top: -140px;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .nickname-ball {
+      position: absolute;
+      left: 110px;
+      bottom: 78px;
+      min-width: 110px;
+      max-width: 300px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top, #ffffff, #dbeafe 65%, #93c5fd);
+      color: #0f172a;
+      font-weight: 900;
+      font-size: 18px;
+      text-align: center;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+      border: 2px solid rgba(255,255,255,0.7);
+      opacity: 0;
+      transform: translate(0, 0) scale(0.7) rotate(0deg);
+      pointer-events: none;
+    }
+
+    .nickname-ball.launch {
+      animation: shootBall 1.25s cubic-bezier(.17,.84,.32,1) forwards;
+    }
+
+    @keyframes shootBall {
+      0% {
+        opacity: 0;
+        transform: translate(0, 0) scale(0.7) rotate(0deg);
+      }
+      8% {
+        opacity: 1;
+        transform: translate(20px, -10px) scale(0.9) rotate(6deg);
+      }
+      35% {
+        opacity: 1;
+        transform: translate(220px, -220px) scale(1.03) rotate(16deg);
+      }
+      65% {
+        opacity: 1;
+        transform: translate(430px, -320px) scale(1.08) rotate(8deg);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(610px, -165px) scale(1.06) rotate(0deg);
+      }
+    }
+
+    .result-fixed {
+      position: absolute;
+      right: 50px;
+      top: 90px;
+      width: 290px;
+      min-height: 120px;
+      border-radius: 26px;
+      padding: 18px;
+      background: rgba(2,6,23,0.74);
+      border: 1px solid #475569;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      box-shadow: inset 0 0 40px rgba(255,255,255,0.02);
+    }
+
+    .result-fixed .mini {
       color: #94a3b8;
-      font-size: 14px;
+      font-size: 13px;
       margin-bottom: 10px;
     }
 
-    .result {
-      font-size: 34px;
+    .result-name {
+      font-size: 32px;
       font-weight: 900;
       word-break: break-word;
-      min-height: 42px;
+      line-height: 1.25;
+    }
+
+    .ground {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 64px;
+      background: linear-gradient(180deg, #1e293b, #0f172a);
+      border-top: 1px solid #334155;
+    }
+
+    .cannon-base {
+      position: absolute;
+      left: 70px;
+      bottom: 34px;
+      width: 120px;
+      height: 48px;
+      background: linear-gradient(180deg, #334155, #1e293b);
+      border-radius: 18px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+    }
+
+    .wheel {
+      position: absolute;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #0f172a;
+      border: 6px solid #475569;
+      bottom: 16px;
+    }
+
+    .wheel.left { left: 86px; }
+    .wheel.right { left: 138px; }
+
+    .barrel {
+      position: absolute;
+      left: 118px;
+      bottom: 86px;
+      width: 170px;
+      height: 36px;
+      border-radius: 18px;
+      transform: rotate(-25deg);
+      transform-origin: left center;
+      background: linear-gradient(90deg, #64748b, #cbd5e1);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.28);
+    }
+
+    .barrel::after {
+      content: "";
+      position: absolute;
+      right: -10px;
+      top: 5px;
+      width: 16px;
+      height: 26px;
+      background: #e2e8f0;
+      border-radius: 4px;
+    }
+
+    .spark {
+      position: absolute;
+      left: 265px;
+      bottom: 185px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #fbbf24;
+      filter: blur(2px);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .spark.show {
+      animation: sparkPop .32s ease-out;
+    }
+
+    @keyframes sparkPop {
+      0% { opacity: 0; transform: scale(0.4); }
+      40% { opacity: 1; transform: scale(1.4); }
+      100% { opacity: 0; transform: scale(2.1); }
+    }
+
+    .history-box {
+      padding: 20px;
+    }
+
+    .history-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      min-height: 30px;
+    }
+
+    .history-item {
+      background: #1e293b;
+      color: #e2e8f0;
+      border: 1px solid #334155;
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-weight: 700;
+      font-size: 14px;
     }
 
     .count {
-      margin-top: 14px;
-      color: #cbd5e1;
+      margin-top: 12px;
       font-size: 14px;
-      text-align: right;
+      color: #94a3b8;
     }
 
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 26px;
+    @media (max-width: 900px) {
+      .config-grid {
+        grid-template-columns: 1fr;
       }
 
-      .result {
-        font-size: 28px;
+      .stage {
+        min-height: 520px;
       }
 
-      button {
-        width: 100%;
+      .result-fixed {
+        right: 18px;
+        top: 18px;
+        width: calc(100% - 36px);
+        min-height: 110px;
+      }
+
+      .nickname-ball.launch {
+        animation: shootBallMobile 1.2s cubic-bezier(.17,.84,.32,1) forwards;
+      }
+
+      @keyframes shootBallMobile {
+        0% {
+          opacity: 0;
+          transform: translate(0, 0) scale(0.7) rotate(0deg);
+        }
+        10% {
+          opacity: 1;
+          transform: translate(20px, -10px) scale(0.9) rotate(8deg);
+        }
+        40% {
+          opacity: 1;
+          transform: translate(120px, -200px) scale(1.03) rotate(18deg);
+        }
+        70% {
+          opacity: 1;
+          transform: translate(170px, -250px) scale(1.06) rotate(6deg);
+        }
+        100% {
+          opacity: 1;
+          transform: translate(185px, -145px) scale(1.04) rotate(0deg);
+        }
       }
     }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <h1>🎯 대포뽑기 닉네임</h1>
-    <div class="desc">
-      닉네임을 아래에 넣고 뽑기 누르면 랜덤으로 1개 나옴<br />
-      한 줄에 하나씩 넣거나, 쉼표(,)로 여러 개 넣어도 됨
-    </div>
+    <div class="top-box">
+      <h1>🎯 대포 닉네임 뽑기</h1>
+      <div class="sub">
+        닉네임 입력 → 시작하기 → 발사<br>
+        한 줄씩 넣거나 쉼표(,)로 넣어도 됨
+      </div>
 
-    <textarea id="nameInput" placeholder="예시
+      <div class="config-title">설정</div>
+
+      <div class="config-grid">
+        <div>
+          <textarea id="nameInput" placeholder="예시
 광기의참치
 잠든폭격기
 미친오징어, 노빠꾸곰탱이, 핵주먹너구리"></textarea>
+        </div>
 
-    <div class="btns">
-      <button class="pick-btn" onclick="pickName()">뽑기</button>
-      <button class="copy-btn" onclick="copyResult()">결과 복사</button>
-      <button class="reset-btn" onclick="resetAll()">초기화</button>
+        <div class="right-controls">
+          <div class="option-card">
+            <div class="option-label">한 번에 뽑을 최대 횟수</div>
+            <input type="number" id="maxCount" min="1" max="9999" value="9999" />
+            <div class="option-desc">이 숫자만큼 발사하면 더 이상 안 뽑힘</div>
+          </div>
+
+          <div class="option-card">
+            <div class="option-label">중복 닉네임 허용</div>
+            <label class="check-row">
+              <input type="checkbox" id="allowDuplicate">
+              중복 허용 켜기
+            </label>
+            <div class="option-desc">끄면 이미 나온 닉네임은 다시 안 나옴</div>
+          </div>
+
+          <div class="btn-row">
+            <button class="start-btn" onclick="startGame()">시작하기</button>
+            <button class="fire-btn" onclick="fireName()">발사</button>
+            <button class="reset-btn" onclick="resetGame()">다시</button>
+          </div>
+
+          <div class="count" id="statusText">아직 시작 안 함</div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="sky-glow"></div>
+        <div class="spark" id="spark"></div>
+        <div class="nickname-ball" id="ball">닉네임</div>
+
+        <div class="result-fixed">
+          <div class="mini">현재 나온 닉네임</div>
+          <div class="result-name" id="currentResult">-</div>
+        </div>
+
+        <div class="barrel"></div>
+        <div class="cannon-base"></div>
+        <div class="wheel left"></div>
+        <div class="wheel right"></div>
+        <div class="ground"></div>
+      </div>
     </div>
 
-    <div class="result-box">
-      <div class="result-label">뽑힌 닉네임</div>
-      <div class="result" id="result">여기에 결과가 나옴</div>
+    <div class="history-box">
+      <div class="history-title">최근 나온 닉네임</div>
+      <div class="history-list" id="historyList"></div>
     </div>
-
-    <div class="count" id="countText">현재 닉네임 수: 0개</div>
   </div>
 
   <script>
     const nameInput = document.getElementById("nameInput");
-    const result = document.getElementById("result");
-    const countText = document.getElementById("countText");
+    const maxCountInput = document.getElementById("maxCount");
+    const allowDuplicateInput = document.getElementById("allowDuplicate");
+    const statusText = document.getElementById("statusText");
+    const currentResult = document.getElementById("currentResult");
+    const historyList = document.getElementById("historyList");
+    const ball = document.getElementById("ball");
+    const spark = document.getElementById("spark");
+
+    let originalNames = [];
+    let availableNames = [];
+    let pickedHistory = [];
+    let started = false;
+    let firing = false;
 
     function parseNames(text) {
       return text
         .split(/\n|,/)
-        .map(name => name.trim())
-        .filter(name => name.length > 0);
+        .map(v => v.trim())
+        .filter(v => v.length > 0);
     }
 
-    function updateCount() {
-      const names = parseNames(nameInput.value);
-      countText.innerText = `현재 닉네임 수: ${names.length}개`;
-    }
+    function renderHistory() {
+      historyList.innerHTML = "";
 
-    function pickName() {
-      const names = parseNames(nameInput.value);
-
-      if (names.length === 0) {
-        result.innerText = "닉네임을 먼저 입력해줘";
+      if (pickedHistory.length === 0) {
+        historyList.innerHTML = '<div style="color:#94a3b8;">아직 나온 닉네임 없음</div>';
         return;
       }
 
-      const randomIndex = Math.floor(Math.random() * names.length);
-      result.innerText = names[randomIndex];
+      pickedHistory.slice().reverse().forEach(name => {
+        const div = document.createElement("div");
+        div.className = "history-item";
+        div.textContent = name;
+        historyList.appendChild(div);
+      });
     }
 
-    function copyResult() {
-      const text = result.innerText.trim();
+    function updateStatus() {
+      const maxCount = Number(maxCountInput.value) || 0;
+      statusText.textContent =
+        `전체 ${originalNames.length}개 / 나온 개수 ${pickedHistory.length}개 / 최대 ${maxCount}회`;
+    }
 
-      if (!text || text === "여기에 결과가 나옴" || text === "닉네임을 먼저 입력해줘") {
-        alert("복사할 결과가 없음");
+    function startGame() {
+      const parsed = parseNames(nameInput.value);
+      const maxCount = Number(maxCountInput.value);
+
+      if (parsed.length === 0) {
+        alert("닉네임을 먼저 입력해줘");
         return;
       }
 
-      navigator.clipboard.writeText(text)
-        .then(() => {
-          alert("결과 복사 완료");
-        })
-        .catch(() => {
-          alert("복사 실패");
-        });
+      if (!Number.isInteger(maxCount) || maxCount < 1) {
+        alert("최대 횟수는 1 이상으로 넣어줘");
+        return;
+      }
+
+      originalNames = [...parsed];
+      availableNames = [...parsed];
+      pickedHistory = [];
+      started = true;
+      currentResult.textContent = "-";
+      renderHistory();
+      updateStatus();
     }
 
-    function resetAll() {
-      nameInput.value = "";
-      result.innerText = "여기에 결과가 나옴";
-      updateCount();
+    function getRandomName() {
+      const allowDuplicate = allowDuplicateInput.checked;
+
+      if (allowDuplicate) {
+        const idx = Math.floor(Math.random() * originalNames.length);
+        return originalNames[idx];
+      }
+
+      if (availableNames.length === 0) {
+        return null;
+      }
+
+      const idx = Math.floor(Math.random() * availableNames.length);
+      const picked = availableNames[idx];
+      availableNames.splice(idx, 1);
+      return picked;
     }
 
-    nameInput.addEventListener("input", updateCount);
-    updateCount();
+    function fireEffect(name) {
+      ball.textContent = name;
+      ball.classList.remove("launch");
+      void ball.offsetWidth;
+      ball.classList.add("launch");
+
+      spark.classList.remove("show");
+      void spark.offsetWidth;
+      spark.classList.add("show");
+    }
+
+    function fireName() {
+      if (!started) {
+        alert("먼저 시작하기를 눌러줘");
+        return;
+      }
+
+      if (firing) return;
+
+      const maxCount = Number(maxCountInput.value) || 0;
+
+      if (pickedHistory.length >= maxCount) {
+        alert("설정한 최대 횟수만큼 다 뽑았음");
+        return;
+      }
+
+      const picked = getRandomName();
+
+      if (!picked) {
+        alert("중복 없이 뽑을 닉네임이 더 없음");
+        return;
+      }
+
+      firing = true;
+      fireEffect(picked);
+
+      setTimeout(() => {
+        currentResult.textContent = picked;
+        pickedHistory.push(picked);
+        renderHistory();
+        updateStatus();
+        firing = false;
+      }, 900);
+    }
+
+    function resetGame() {
+      originalNames = [];
+      availableNames = [];
+      pickedHistory = [];
+      started = false;
+      firing = false;
+
+      currentResult.textContent = "-";
+      statusText.textContent = "아직 시작 안 함";
+      renderHistory();
+
+      ball.classList.remove("launch");
+      ball.style.opacity = "0";
+    }
+
+    renderHistory();
   </script>
 </body>
 </html>
