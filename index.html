@@ -1,72 +1,239 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>대포 닉네임 뽑기</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>대포뽑기 닉네임</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-<style>
-body {
-  background: #0f172a;
-  color: white;
-  font-family: sans-serif;
-  text-align: center;
-  padding-top: 100px;
-}
+    body {
+      margin: 0;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      background: linear-gradient(180deg, #0f172a, #020617);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
 
-button {
-  padding: 15px 30px;
-  font-size: 18px;
-  border: none;
-  border-radius: 10px;
-  background: #2563eb;
-  color: white;
-  cursor: pointer;
-}
+    .wrap {
+      width: 100%;
+      max-width: 700px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid #334155;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
 
-button:hover {
-  background: #1e40af;
-}
+    h1 {
+      margin: 0 0 10px;
+      text-align: center;
+      font-size: 32px;
+    }
 
-#result {
-  margin-top: 40px;
-  font-size: 30px;
-  font-weight: bold;
-}
-</style>
+    .desc {
+      text-align: center;
+      color: #cbd5e1;
+      font-size: 14px;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 220px;
+      resize: vertical;
+      border: 1px solid #475569;
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 16px;
+      background: #020617;
+      color: #fff;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: #3b82f6;
+    }
+
+    .btns {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    button {
+      flex: 1;
+      min-width: 120px;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .pick-btn {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+    }
+
+    .pick-btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.95;
+    }
+
+    .reset-btn {
+      background: #334155;
+      color: white;
+    }
+
+    .reset-btn:hover {
+      background: #475569;
+    }
+
+    .copy-btn {
+      background: #16a34a;
+      color: white;
+    }
+
+    .copy-btn:hover {
+      background: #15803d;
+    }
+
+    .result-box {
+      margin-top: 22px;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 24px 16px;
+      text-align: center;
+      background: #020617;
+    }
+
+    .result-label {
+      color: #94a3b8;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .result {
+      font-size: 34px;
+      font-weight: 900;
+      word-break: break-word;
+      min-height: 42px;
+    }
+
+    .count {
+      margin-top: 14px;
+      color: #cbd5e1;
+      font-size: 14px;
+      text-align: right;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 26px;
+      }
+
+      .result {
+        font-size: 28px;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="wrap">
+    <h1>🎯 대포뽑기 닉네임</h1>
+    <div class="desc">
+      닉네임을 아래에 넣고 뽑기 누르면 랜덤으로 1개 나옴<br />
+      한 줄에 하나씩 넣거나, 쉼표(,)로 여러 개 넣어도 됨
+    </div>
 
-<h1>🎯 대포 닉네임 뽑기</h1>
+    <textarea id="nameInput" placeholder="예시
+광기의참치
+잠든폭격기
+미친오징어, 노빠꾸곰탱이, 핵주먹너구리"></textarea>
 
-<button onclick="pickName()">뽑기!</button>
+    <div class="btns">
+      <button class="pick-btn" onclick="pickName()">뽑기</button>
+      <button class="copy-btn" onclick="copyResult()">결과 복사</button>
+      <button class="reset-btn" onclick="resetAll()">초기화</button>
+    </div>
 
-<div id="result">여기에 닉네임 나옴</div>
+    <div class="result-box">
+      <div class="result-label">뽑힌 닉네임</div>
+      <div class="result" id="result">여기에 결과가 나옴</div>
+    </div>
 
-<script>
-const names = [
-  "광기의참치",
-  "잠든폭격기",
-  "미친오징어",
-  "노빠꾸곰탱이",
-  "분노의고양이",
-  "핵주먹너구리",
-  "야생의두더지",
-  "폭주하는햄스터",
-  "씹강한치킨",
-  "지리는펭귄",
-  "날아다니는돼지",
-  "겁없는문어",
-  "흑화한토끼",
-  "미쳐버린악어",
-  "극딜장인"
-];
+    <div class="count" id="countText">현재 닉네임 수: 0개</div>
+  </div>
 
-function pickName() {
-  const random = Math.floor(Math.random() * names.length);
-  document.getElementById("result").innerText = names[random];
-}
-</script>
+  <script>
+    const nameInput = document.getElementById("nameInput");
+    const result = document.getElementById("result");
+    const countText = document.getElementById("countText");
 
+    function parseNames(text) {
+      return text
+        .split(/\n|,/)
+        .map(name => name.trim())
+        .filter(name => name.length > 0);
+    }
+
+    function updateCount() {
+      const names = parseNames(nameInput.value);
+      countText.innerText = `현재 닉네임 수: ${names.length}개`;
+    }
+
+    function pickName() {
+      const names = parseNames(nameInput.value);
+
+      if (names.length === 0) {
+        result.innerText = "닉네임을 먼저 입력해줘";
+        return;
+      }
+
+      const randomIndex = Math.floor(Math.random() * names.length);
+      result.innerText = names[randomIndex];
+    }
+
+    function copyResult() {
+      const text = result.innerText.trim();
+
+      if (!text || text === "여기에 결과가 나옴" || text === "닉네임을 먼저 입력해줘") {
+        alert("복사할 결과가 없음");
+        return;
+      }
+
+      navigator.clipboard.writeText(text)
+        .then(() => {
+          alert("결과 복사 완료");
+        })
+        .catch(() => {
+          alert("복사 실패");
+        });
+    }
+
+    function resetAll() {
+      nameInput.value = "";
+      result.innerText = "여기에 결과가 나옴";
+      updateCount();
+    }
+
+    nameInput.addEventListener("input", updateCount);
+    updateCount();
+  </script>
 </body>
 </html>
