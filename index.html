@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>대포 닉네임 뽑기</title>
+
+<style>
+body {
+  background: #0f172a;
+  color: white;
+  font-family: sans-serif;
+  text-align: center;
+  padding-top: 100px;
+}
+
+button {
+  padding: 15px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1e40af;
+}
+
+#result {
+  margin-top: 40px;
+  font-size: 30px;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎯 대포 닉네임 뽑기</h1>
+
+<button onclick="pickName()">뽑기!</button>
+
+<div id="result">여기에 닉네임 나옴</div>
+
+<script>
+const names = [
+  "광기의참치",
+  "잠든폭격기",
+  "미친오징어",
+  "노빠꾸곰탱이",
+  "분노의고양이",
+  "핵주먹너구리",
+  "야생의두더지",
+  "폭주하는햄스터",
+  "씹강한치킨",
+  "지리는펭귄",
+  "날아다니는돼지",
+  "겁없는문어",
+  "흑화한토끼",
+  "미쳐버린악어",
+  "극딜장인"
+];
+
+function pickName() {
+  const random = Math.floor(Math.random() * names.length);
+  document.getElementById("result").innerText = names[random];
+}
+</script>
+
+</body>
+</html>
