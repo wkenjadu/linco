@@ -5,268 +5,70 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>대포 닉네임 뽑기</title>
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
       font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
-      background:
-        radial-gradient(circle at top, #1e293b 0%, #0f172a 35%, #020617 100%);
-      color: #fff;
-      min-height: 100vh;
-    }
-
-    .wrap {
-      width: 100%;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    .top-box, .history-box {
-      background: rgba(15, 23, 42, 0.92);
-      border: 1px solid #334155;
-      border-radius: 22px;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.35);
-    }
-
-    .top-box {
-      padding: 20px;
-      margin-bottom: 18px;
-    }
-
-    h1 {
-      margin: 0 0 16px;
-      font-size: 34px;
-      text-align: center;
-      font-weight: 900;
-      letter-spacing: -0.5px;
-    }
-
-    .sub {
-      text-align: center;
-      color: #cbd5e1;
-      margin-bottom: 20px;
-      line-height: 1.6;
-      font-size: 14px;
-    }
-
-    .config-title, .history-title {
-      font-size: 22px;
-      font-weight: 800;
-      margin-bottom: 14px;
-    }
-
-    .config-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 18px;
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 170px;
-      resize: vertical;
-      border-radius: 16px;
-      border: 1px solid #475569;
-      background: #020617;
-      color: #fff;
-      padding: 14px;
-      font-size: 16px;
-      outline: none;
-    }
-
-    textarea:focus {
-      border-color: #60a5fa;
-      box-shadow: 0 0 0 3px rgba(96,165,250,0.14);
-    }
-
-    .right-controls {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .option-card {
-      background: #111827;
-      border: 1px solid #334155;
-      border-radius: 16px;
-      padding: 14px;
-    }
-
-    .option-label {
-      font-weight: 700;
-      font-size: 15px;
-      margin-bottom: 8px;
-      color: #e2e8f0;
-    }
-
-    .option-desc {
-      font-size: 13px;
-      color: #94a3b8;
-      margin-top: 6px;
-      line-height: 1.5;
-    }
-
-    input[type="number"] {
-      width: 100%;
-      border: 1px solid #475569;
-      background: #020617;
-      color: white;
-      padding: 12px;
-      border-radius: 12px;
-      font-size: 15px;
-      outline: none;
-    }
-
-    .check-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 15px;
-      color: #e2e8f0;
-    }
-
-    .btn-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 6px;
-    }
-
-    button {
-      border: none;
-      border-radius: 14px;
-      padding: 13px 18px;
-      font-size: 15px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: transform .15s ease, opacity .15s ease, background .15s ease;
-    }
-
-    button:hover {
-      transform: translateY(-1px);
-      opacity: 0.96;
-    }
-
-    .start-btn {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: #fff;
-      flex: 1;
-    }
-
-    .fire-btn {
-      background: linear-gradient(135deg, #f97316, #ea580c);
-      color: #fff;
-      flex: 1;
-    }
-
-    .reset-btn {
-      background: #334155;
-      color: #fff;
-      flex: 1;
-    }
-
-    .stage {
-      margin-top: 18px;
-      background:
-        linear-gradient(to top, rgba(30,41,59,0.9), rgba(15,23,42,0.75)),
-        radial-gradient(circle at 50% 10%, rgba(59,130,246,0.12), transparent 40%);
-      border: 1px solid #334155;
-      border-radius: 22px;
-      padding: 18px;
-      min-height: 440px;
-      position: relative;
+      background: #0b1120;
+      color: #e5e7eb;
       overflow: hidden;
     }
 
-    .sky-glow {
-      position: absolute;
-      width: 360px;
-      height: 360px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(59,130,246,0.22), transparent 70%);
-      top: -140px;
-      left: 50%;
-      transform: translateX(-50%);
-      pointer-events: none;
-    }
-
-    .nickname-ball {
-      position: absolute;
-      left: 110px;
-      bottom: 78px;
-      min-width: 110px;
-      max-width: 300px;
-      padding: 12px 18px;
-      border-radius: 999px;
-      background: radial-gradient(circle at top, #ffffff, #dbeafe 65%, #93c5fd);
-      color: #0f172a;
-      font-weight: 900;
-      font-size: 18px;
-      text-align: center;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.35);
-      border: 2px solid rgba(255,255,255,0.7);
-      opacity: 0;
-      transform: translate(0, 0) scale(0.7) rotate(0deg);
-      pointer-events: none;
-    }
-
-    .nickname-ball.launch {
-      animation: shootBall 1.25s cubic-bezier(.17,.84,.32,1) forwards;
-    }
-
-    @keyframes shootBall {
-      0% {
-        opacity: 0;
-        transform: translate(0, 0) scale(0.7) rotate(0deg);
-      }
-      8% {
-        opacity: 1;
-        transform: translate(20px, -10px) scale(0.9) rotate(6deg);
-      }
-      35% {
-        opacity: 1;
-        transform: translate(220px, -220px) scale(1.03) rotate(16deg);
-      }
-      65% {
-        opacity: 1;
-        transform: translate(430px, -320px) scale(1.08) rotate(8deg);
-      }
-      100% {
-        opacity: 1;
-        transform: translate(610px, -165px) scale(1.06) rotate(0deg);
-      }
-    }
-
-    .result-fixed {
-      position: absolute;
-      right: 50px;
-      top: 90px;
-      width: 290px;
-      min-height: 120px;
-      border-radius: 26px;
-      padding: 18px;
-      background: rgba(2,6,23,0.74);
-      border: 1px solid #475569;
+    body {
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      text-align: center;
-      box-shadow: inset 0 0 40px rgba(255,255,255,0.02);
     }
 
-    .result-fixed .mini {
-      color: #94a3b8;
-      font-size: 13px;
-      margin-bottom: 10px;
+    .app {
+      display: flex;
+      width: 100%;
+      height: 100%;
     }
 
-    .result-name {
-      font-size: 32px;
-      font-weight: 900;
-      word-break: break-word;
-      line-height: 1.25;
+    .left {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 15%, rgba(96, 165, 250, 0.18), transparent 28%),
+        linear-gradient(180deg, #0f172a 0%, #111827 55%, #0b1120 100%);
+      border-right: 1px solid #1f2937;
+    }
+
+    .sky {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, #1e293b 0%, #111827 55%, #0f172a 100%);
+    }
+
+    .hill-back {
+      position: absolute;
+      left: -10%;
+      bottom: 16%;
+      width: 75%;
+      height: 22%;
+      background: #14532d;
+      border-top: 5px solid #0a0a0a;
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      transform: rotate(1.5deg);
+      box-shadow: inset 0 10px 20px rgba(255,255,255,0.03);
+    }
+
+    .hill-front {
+      position: absolute;
+      right: -8%;
+      bottom: 16%;
+      width: 70%;
+      height: 26%;
+      background: #65a30d;
+      border-top: 3px solid #0a0a0a;
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      box-shadow: inset 0 12px 20px rgba(255,255,255,0.05);
     }
 
     .ground {
@@ -274,238 +76,508 @@
       left: 0;
       right: 0;
       bottom: 0;
-      height: 64px;
-      background: linear-gradient(180deg, #1e293b, #0f172a);
-      border-top: 1px solid #334155;
+      height: 16%;
+      background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
+      border-top: 2px solid rgba(255,255,255,0.05);
     }
 
-    .cannon-base {
+    .cannon-wrap {
       position: absolute;
-      left: 70px;
-      bottom: 34px;
-      width: 120px;
-      height: 48px;
-      background: linear-gradient(180deg, #334155, #1e293b);
-      border-radius: 18px;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+      left: 50%;
+      bottom: 10%;
+      width: 240px;
+      height: 300px;
+      transform: translateX(-50%);
+      z-index: 5;
     }
 
-    .wheel {
+    .cannon-body {
       position: absolute;
-      width: 42px;
-      height: 42px;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 260px;
+      background: linear-gradient(90deg, #92400e 0%, #f59e0b 34%, #d97706 68%, #92400e 100%);
+      clip-path: polygon(12% 100%, 0% 24%, 100% 24%, 88% 100%);
+      border: 3px solid #0a0a0a;
+      box-shadow: 0 18px 30px rgba(0,0,0,0.35);
+    }
+
+    .cannon-rim {
+      position: absolute;
+      left: 50%;
+      top: 56px;
+      transform: translateX(-50%);
+      width: 164px;
+      height: 28px;
       border-radius: 50%;
-      background: #0f172a;
-      border: 6px solid #475569;
-      bottom: 16px;
+      background: linear-gradient(180deg, #fde68a, #f59e0b);
+      border: 3px solid #0a0a0a;
+      z-index: 2;
     }
 
-    .wheel.left { left: 86px; }
-    .wheel.right { left: 138px; }
-
-    .barrel {
+    .cannon-hole {
       position: absolute;
-      left: 118px;
-      bottom: 86px;
-      width: 170px;
-      height: 36px;
-      border-radius: 18px;
-      transform: rotate(-25deg);
-      transform-origin: left center;
-      background: linear-gradient(90deg, #64748b, #cbd5e1);
-      box-shadow: 0 8px 18px rgba(0,0,0,0.28);
-    }
-
-    .barrel::after {
-      content: "";
-      position: absolute;
-      right: -10px;
-      top: 5px;
-      width: 16px;
-      height: 26px;
-      background: #e2e8f0;
-      border-radius: 4px;
-    }
-
-    .spark {
-      position: absolute;
-      left: 265px;
-      bottom: 185px;
-      width: 18px;
+      left: 50%;
+      top: 61px;
+      transform: translateX(-50%);
+      width: 134px;
       height: 18px;
       border-radius: 50%;
-      background: #fbbf24;
-      filter: blur(2px);
+      background: #111827;
+      border: 2px solid rgba(255,255,255,0.08);
+      z-index: 3;
+    }
+
+    .fire-btn {
+      position: absolute;
+      left: 50%;
+      top: 128px;
+      transform: translateX(-50%);
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      border: 3px solid #0a0a0a;
+      background: radial-gradient(circle at 30% 30%, #fde047, #eab308);
+      color: #111827;
+      font-size: 24px;
+      font-weight: 900;
+      cursor: pointer;
+      z-index: 4;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+      transition: transform 0.1s ease, filter 0.15s ease;
+    }
+
+    .fire-btn:hover {
+      filter: brightness(1.05);
+    }
+
+    .fire-btn:active {
+      transform: translateX(-50%) scale(0.96);
+    }
+
+    .shot-name {
+      position: absolute;
+      left: 50%;
+      bottom: 235px;
+      transform: translateX(-50%);
+      min-width: 120px;
+      max-width: 300px;
+      padding: 12px 20px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #f8fafc, #cbd5e1);
+      color: #0f172a;
+      font-size: 22px;
+      font-weight: 900;
+      text-align: center;
+      border: 3px solid #0a0a0a;
+      box-shadow: 0 14px 28px rgba(0,0,0,0.35);
       opacity: 0;
+      pointer-events: none;
+      z-index: 8;
+      white-space: nowrap;
+    }
+
+    .shot-name.launch {
+      animation: launchName 1s ease-out forwards;
+    }
+
+    @keyframes launchName {
+      0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px) scale(0.6);
+      }
+      10% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-10px) scale(1);
+      }
+      35% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-110px) scale(1.03);
+      }
+      60% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-185px) scale(1.06);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-260px) scale(1.08);
+      }
+    }
+
+    .flash {
+      position: absolute;
+      left: 50%;
+      top: 42px;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(253,224,71,0.95), rgba(251,191,36,0.5), transparent 70%);
+      opacity: 0;
+      z-index: 7;
       pointer-events: none;
     }
 
-    .spark.show {
-      animation: sparkPop .32s ease-out;
+    .flash.show {
+      animation: flashPop 0.28s ease-out;
     }
 
-    @keyframes sparkPop {
-      0% { opacity: 0; transform: scale(0.4); }
-      40% { opacity: 1; transform: scale(1.4); }
-      100% { opacity: 0; transform: scale(2.1); }
+    @keyframes flashPop {
+      0% { opacity: 0; transform: translateX(-50%) scale(0.4); }
+      35% { opacity: 1; transform: translateX(-50%) scale(1); }
+      100% { opacity: 0; transform: translateX(-50%) scale(1.6); }
     }
 
-    .history-box {
-      padding: 20px;
+    .top-left-panel {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 340px;
+      max-width: calc(100% - 40px);
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid #334155;
+      border-radius: 18px;
+      padding: 14px;
+      z-index: 20;
+      box-shadow: 0 16px 30px rgba(0,0,0,0.25);
+    }
+
+    .panel-title {
+      font-size: 18px;
+      font-weight: 900;
+      margin-bottom: 10px;
+      color: #f8fafc;
+    }
+
+    .panel-desc {
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 130px;
+      resize: none;
+      border-radius: 12px;
+      border: 1px solid #475569;
+      background: #020617;
+      color: #f8fafc;
+      padding: 12px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: #60a5fa;
+    }
+
+    .panel-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .small-btn {
+      flex: 1;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 12px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      color: white;
+    }
+
+    .blue {
+      background: #2563eb;
+    }
+
+    .gray {
+      background: #334155;
+    }
+
+    .status {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #cbd5e1;
+    }
+
+    .right {
+      width: 270px;
+      background: #0f172a;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      border-left: 1px solid #1f2937;
+    }
+
+    .history-card {
+      margin: 18px;
+      flex: 1;
+      background: #111827;
+      border: 2px solid #374151;
+      border-radius: 22px;
+      padding: 18px 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+    }
+
+    .history-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: #f3f4f6;
+      margin-bottom: 14px;
+      text-align: center;
     }
 
     .history-list {
+      flex: 1;
+      overflow-y: auto;
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: 10px;
-      min-height: 30px;
+      padding-right: 4px;
     }
 
     .history-item {
-      background: #1e293b;
-      color: #e2e8f0;
+      background: #1f2937;
+      color: #f9fafb;
+      border: 1px solid #374151;
+      border-radius: 14px;
+      padding: 12px 10px;
+      font-size: 17px;
+      font-weight: 800;
+      text-align: center;
+      word-break: break-word;
+    }
+
+    .empty-text {
+      color: #64748b;
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .bottom-right {
+      padding: 0 18px 18px;
+    }
+
+    .reset-btn {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 16px;
+      background: linear-gradient(180deg, #ef4444, #b91c1c);
+      color: white;
+      font-size: 18px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+    }
+
+    .current-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(15, 23, 42, 0.92);
       border: 1px solid #334155;
-      border-radius: 999px;
-      padding: 9px 14px;
-      font-weight: 700;
-      font-size: 14px;
+      border-radius: 14px;
+      padding: 12px 14px;
+      z-index: 20;
+      min-width: 180px;
+      text-align: center;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.25);
     }
 
-    .count {
-      margin-top: 12px;
-      font-size: 14px;
+    .current-label {
+      font-size: 12px;
       color: #94a3b8;
+      margin-bottom: 6px;
     }
 
-    @media (max-width: 900px) {
-      .config-grid {
-        grid-template-columns: 1fr;
+    .current-name {
+      font-size: 22px;
+      font-weight: 900;
+      color: #f8fafc;
+      word-break: break-word;
+    }
+
+    @media (max-width: 1000px) {
+      .right {
+        width: 220px;
       }
 
-      .stage {
-        min-height: 520px;
+      .top-left-panel {
+        width: 300px;
+      }
+    }
+
+    @media (max-width: 820px) {
+      html, body {
+        overflow: auto;
       }
 
-      .result-fixed {
-        right: 18px;
-        top: 18px;
-        width: calc(100% - 36px);
-        min-height: 110px;
+      .app {
+        flex-direction: column;
+        height: auto;
+        min-height: 100%;
       }
 
-      .nickname-ball.launch {
-        animation: shootBallMobile 1.2s cubic-bezier(.17,.84,.32,1) forwards;
+      .left {
+        min-height: 78vh;
       }
 
-      @keyframes shootBallMobile {
-        0% {
-          opacity: 0;
-          transform: translate(0, 0) scale(0.7) rotate(0deg);
-        }
-        10% {
-          opacity: 1;
-          transform: translate(20px, -10px) scale(0.9) rotate(8deg);
-        }
-        40% {
-          opacity: 1;
-          transform: translate(120px, -200px) scale(1.03) rotate(18deg);
-        }
-        70% {
-          opacity: 1;
-          transform: translate(170px, -250px) scale(1.06) rotate(6deg);
-        }
-        100% {
-          opacity: 1;
-          transform: translate(185px, -145px) scale(1.04) rotate(0deg);
-        }
+      .right {
+        width: 100%;
+        min-height: 280px;
+      }
+
+      .history-card {
+        margin: 16px 16px 10px;
+      }
+
+      .bottom-right {
+        padding: 0 16px 16px;
+      }
+
+      .current-badge {
+        top: auto;
+        bottom: 20px;
+        right: 20px;
+        left: 20px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="top-box">
-      <h1>🎯 대포 닉네임 뽑기</h1>
-      <div class="sub">
-        닉네임 입력 → 시작하기 → 발사<br>
-        한 줄씩 넣거나 쉼표(,)로 넣어도 됨
+  <div class="app">
+    <div class="left">
+      <div class="sky"></div>
+      <div class="hill-back"></div>
+      <div class="hill-front"></div>
+      <div class="ground"></div>
+
+      <div class="top-left-panel">
+        <div class="panel-title">닉네임 입력</div>
+        <div class="panel-desc">
+          한 줄에 하나씩 넣거나 쉼표(,)로 넣어도 됩니다
+        </div>
+        <textarea id="nameInput" placeholder="예시"></textarea>
+
+        <div class="panel-row">
+          <button class="small-btn blue" onclick="startGame()">시작</button>
+          <button class="small-btn gray" onclick="shuffleNames()">섞기</button>
+        </div>
+
+        <div class="status" id="statusText">아직 시작 안 함</div>
       </div>
 
-      <div class="config-title">설정</div>
-
-      <div class="config-grid">
-        <div>
-          <textarea id="nameInput" placeholder="예시
-광기의참치
-잠든폭격기
-미친오징어, 노빠꾸곰탱이, 핵주먹너구리"></textarea>
-        </div>
-
-        <div class="right-controls">
-          <div class="option-card">
-            <div class="option-label">한 번에 뽑을 최대 횟수</div>
-            <input type="number" id="maxCount" min="1" max="9999" value="9999" />
-            <div class="option-desc">이 숫자만큼 발사하면 더 이상 안 뽑힘</div>
-          </div>
-
-          <div class="option-card">
-            <div class="option-label">중복 닉네임 허용</div>
-            <label class="check-row">
-              <input type="checkbox" id="allowDuplicate">
-              중복 허용 켜기
-            </label>
-            <div class="option-desc">끄면 이미 나온 닉네임은 다시 안 나옴</div>
-          </div>
-
-          <div class="btn-row">
-            <button class="start-btn" onclick="startGame()">시작하기</button>
-            <button class="fire-btn" onclick="fireName()">발사</button>
-            <button class="reset-btn" onclick="resetGame()">다시</button>
-          </div>
-
-          <div class="count" id="statusText">아직 시작 안 함</div>
-        </div>
+      <div class="current-badge">
+        <div class="current-label">현재 나온 닉네임</div>
+        <div class="current-name" id="currentName">-</div>
       </div>
 
-      <div class="stage">
-        <div class="sky-glow"></div>
-        <div class="spark" id="spark"></div>
-        <div class="nickname-ball" id="ball">닉네임</div>
-
-        <div class="result-fixed">
-          <div class="mini">현재 나온 닉네임</div>
-          <div class="result-name" id="currentResult">-</div>
-        </div>
-
-        <div class="barrel"></div>
-        <div class="cannon-base"></div>
-        <div class="wheel left"></div>
-        <div class="wheel right"></div>
-        <div class="ground"></div>
+      <div class="cannon-wrap">
+        <div class="flash" id="flash"></div>
+        <div class="shot-name" id="shotName">닉네임</div>
+        <div class="cannon-rim"></div>
+        <div class="cannon-hole"></div>
+        <div class="cannon-body"></div>
+        <button class="fire-btn" onclick="fireName()">발사</button>
       </div>
     </div>
 
-    <div class="history-box">
-      <div class="history-title">최근 나온 닉네임</div>
-      <div class="history-list" id="historyList"></div>
+    <div class="right">
+      <div class="history-card">
+        <div class="history-title">최근 나온 닉네임</div>
+        <div class="history-list" id="historyList">
+          <div class="empty-text">아직 나온 닉네임 없음</div>
+        </div>
+      </div>
+
+      <div class="bottom-right">
+        <button class="reset-btn" onclick="resetGame()">다시</button>
+      </div>
     </div>
   </div>
 
   <script>
     const nameInput = document.getElementById("nameInput");
-    const maxCountInput = document.getElementById("maxCount");
-    const allowDuplicateInput = document.getElementById("allowDuplicate");
-    const statusText = document.getElementById("statusText");
-    const currentResult = document.getElementById("currentResult");
     const historyList = document.getElementById("historyList");
-    const ball = document.getElementById("ball");
-    const spark = document.getElementById("spark");
+    const currentName = document.getElementById("currentName");
+    const statusText = document.getElementById("statusText");
+    const shotName = document.getElementById("shotName");
+    const flash = document.getElementById("flash");
 
     let originalNames = [];
     let availableNames = [];
-    let pickedHistory = [];
+    let history = [];
     let started = false;
     let firing = false;
+    let audioCtx = null;
+
+    function ensureAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === "suspended") {
+        audioCtx.resume();
+      }
+    }
+
+    function playLaunchSound() {
+      try {
+        ensureAudio();
+        const now = audioCtx.currentTime;
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = "square";
+        osc.frequency.setValueAtTime(200, now);
+        osc.frequency.exponentialRampToValueAtTime(60, now + 0.22);
+
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.4, now + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.24);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.24);
+      } catch (e) {}
+    }
+
+    function playResultSound() {
+      try {
+        ensureAudio();
+        const now = audioCtx.currentTime;
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(620, now);
+        osc.frequency.exponentialRampToValueAtTime(900, now + 0.14);
+
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.16, now + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.18);
+      } catch (e) {}
+    }
 
     function parseNames(text) {
       return text
@@ -514,15 +586,23 @@
         .filter(v => v.length > 0);
     }
 
+    function updateStatus() {
+      if (!started) {
+        statusText.textContent = "아직 시작 안 함";
+        return;
+      }
+      statusText.textContent = `전체 ${originalNames.length}개 / 남은 ${availableNames.length}개 / 나온 ${history.length}개`;
+    }
+
     function renderHistory() {
       historyList.innerHTML = "";
 
-      if (pickedHistory.length === 0) {
-        historyList.innerHTML = '<div style="color:#94a3b8;">아직 나온 닉네임 없음</div>';
+      if (history.length === 0) {
+        historyList.innerHTML = '<div class="empty-text">아직 나온 닉네임 없음</div>';
         return;
       }
 
-      pickedHistory.slice().reverse().forEach(name => {
+      [...history].reverse().forEach(name => {
         const div = document.createElement("div");
         div.className = "history-item";
         div.textContent = name;
@@ -530,114 +610,104 @@
       });
     }
 
-    function updateStatus() {
-      const maxCount = Number(maxCountInput.value) || 0;
-      statusText.textContent =
-        `전체 ${originalNames.length}개 / 나온 개수 ${pickedHistory.length}개 / 최대 ${maxCount}회`;
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
     }
 
     function startGame() {
       const parsed = parseNames(nameInput.value);
-      const maxCount = Number(maxCountInput.value);
 
       if (parsed.length === 0) {
-        alert("닉네임을 먼저 입력해줘");
+        alert("닉네임을 먼저 입력해주세요");
         return;
       }
 
-      if (!Number.isInteger(maxCount) || maxCount < 1) {
-        alert("최대 횟수는 1 이상으로 넣어줘");
-        return;
-      }
+      try {
+        ensureAudio();
+      } catch (e) {}
 
       originalNames = [...parsed];
       availableNames = [...parsed];
-      pickedHistory = [];
+      history = [];
       started = true;
-      currentResult.textContent = "-";
+      firing = false;
+      currentName.textContent = "-";
       renderHistory();
       updateStatus();
     }
 
-    function getRandomName() {
-      const allowDuplicate = allowDuplicateInput.checked;
+    function shuffleNames() {
+      const parsed = parseNames(nameInput.value);
 
-      if (allowDuplicate) {
-        const idx = Math.floor(Math.random() * originalNames.length);
-        return originalNames[idx];
+      if (parsed.length === 0) {
+        alert("닉네임을 먼저 입력해주세요");
+        return;
       }
 
-      if (availableNames.length === 0) {
-        return null;
-      }
-
-      const idx = Math.floor(Math.random() * availableNames.length);
-      const picked = availableNames[idx];
-      availableNames.splice(idx, 1);
-      return picked;
+      shuffleArray(parsed);
+      nameInput.value = parsed.join("\n");
     }
 
-    function fireEffect(name) {
-      ball.textContent = name;
-      ball.classList.remove("launch");
-      void ball.offsetWidth;
-      ball.classList.add("launch");
+    function showShotEffect(name) {
+      shotName.textContent = name;
+      shotName.classList.remove("launch");
+      void shotName.offsetWidth;
+      shotName.classList.add("launch");
 
-      spark.classList.remove("show");
-      void spark.offsetWidth;
-      spark.classList.add("show");
+      flash.classList.remove("show");
+      void flash.offsetWidth;
+      flash.classList.add("show");
     }
 
     function fireName() {
       if (!started) {
-        alert("먼저 시작하기를 눌러줘");
+        alert("먼저 시작 눌러주세요");
         return;
       }
 
       if (firing) return;
 
-      const maxCount = Number(maxCountInput.value) || 0;
-
-      if (pickedHistory.length >= maxCount) {
-        alert("설정한 최대 횟수만큼 다 뽑았음");
-        return;
-      }
-
-      const picked = getRandomName();
-
-      if (!picked) {
-        alert("중복 없이 뽑을 닉네임이 더 없음");
+      if (availableNames.length === 0) {
+        alert("더 뽑을 닉네임이 없음");
         return;
       }
 
       firing = true;
-      fireEffect(picked);
+
+      const index = Math.floor(Math.random() * availableNames.length);
+      const picked = availableNames[index];
+      availableNames.splice(index, 1);
+
+      playLaunchSound();
+      showShotEffect(picked);
 
       setTimeout(() => {
-        currentResult.textContent = picked;
-        pickedHistory.push(picked);
+        currentName.textContent = picked;
+        history.push(picked);
         renderHistory();
         updateStatus();
+        playResultSound();
         firing = false;
-      }, 900);
+      }, 620);
     }
 
     function resetGame() {
       originalNames = [];
       availableNames = [];
-      pickedHistory = [];
+      history = [];
       started = false;
       firing = false;
-
-      currentResult.textContent = "-";
-      statusText.textContent = "아직 시작 안 함";
+      currentName.textContent = "-";
+      shotName.classList.remove("launch");
       renderHistory();
-
-      ball.classList.remove("launch");
-      ball.style.opacity = "0";
+      updateStatus();
     }
 
     renderHistory();
+    updateStatus();
   </script>
 </body>
 </html>
